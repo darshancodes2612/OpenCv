@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fullscreen Example</title>
+</head>
+<body>
+  <button id="fullscreenButton">Toggle Fullscreen</button>
+  <button id="submitButton" style="display: none;">Submit</button>
+
+  <script>
+    let fullscreenEnabled = false;
+    let timer = null;
+
+    function enterFullscreen() {
+      if (!fullscreenEnabled) {
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) {
+          document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) {
+          document.documentElement.msRequestFullscreen();
+        }
+        fullscreenEnabled = true;
+
+        
+
+        // Start a timer (e.g., 60 seconds)
+        timer = setTimeout(function() {
+          exitFullscreen();
+        }, 60000); // 60,000 milliseconds (60 seconds)
+      }
+    }
+
+    function exitFullscreen() {
+      if (fullscreenEnabled) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+        fullscreenEnabled = false;
+
+        // Clear the timer
+        clearTimeout(timer);
+
+        // Show the "Submit" button
+        document.getElementById("submitButton").style.display = "block";
+      }
+    }
+
+    // Event listener for the fullscreen button
+    document.getElementById("fullscreenButton").addEventListener("click", enterFullscreen);
+
+    // Event listener for the "Submit" button
+    document.getElementById("submitButton").addEventListener("click", exitFullscreen);
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape") {
+    // Prevent the default behavior (e.g., closing a modal)
+            event.preventDefault();
+
+    // You can add custom logic here if needed
+        }
+    });
+  </script>
+</body>
+</html>
